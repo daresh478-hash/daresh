@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culinary Scale Pro | Enterprise Recipe Scaling Engine</title>
+    <meta name="description" content="Enterprise-grade professional culinary recipe scaler with precision ratio calculations, 3D tactile interface, and real-time validation." />
+    <meta property="og:title" content="Culinary Scale Pro" />
+    <meta property="og:description" content="Enterprise-grade professional culinary recipe scaler with precision ratio calculations, 3D tactile interface, and real-time validation." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Application Header -->
+    <header class="app-header" role="banner">
+      <div class="header-container">
+        <div class="brand-wrapper">
+          <div class="brand-icon-3d" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v18M3 9l9-6 9 6M3 9a9 9 0 0 0 18 0M6 14a6 6 0 0 0 12 0"></path>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>CulinaryScale <span class="badge-pro">PRO 3D</span></h1>
+            <p class="brand-subtitle">Commercial Kitchen Yield & Batch Ratio Scaler</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div class="storage-status" title="Local storage active">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Storage: <strong id="storageIndicator">Active</strong></span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="main-wrapper" role="main">
+      <!-- Hero Top Row with Preset Quick-Loaders -->
+      <section class="hero-banner" aria-label="Quick Start and Presets">
+        <div class="hero-copy">
+          <h2>Precision Recipe Batch Scaler</h2>
+          <p>
+            Calculate exact ingredient requirements based on target serving yields.
+            Uses the rigorous culinary scaling formula: <code>Original Amount × (Target Servings ÷ Base Servings)</code>.
+          </p>
+        </div>
+
+        <div class="preset-controls" aria-label="Demo Presets">
+          <span class="preset-label">Quick Test Presets:</span>
+          <button type="button" class="preset-btn" data-preset="carbonara" title="Load Classic Carbonara">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Carbonara
+          </button>
+          <button type="button" class="preset-btn" data-preset="risotto" title="Load Truffle Risotto">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Risotto
+          </button>
+          <button type="button" class="preset-btn" data-preset="sourdough" title="Load Artisan Sourdough">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15M21 16a9 9 0 0 1-9 9 9 9 0 0 1-9-9c0-4.97 4.03-9 9-9 2.12 0 4.07.74 5.61 1.97"/></svg>
+            Sourdough
+          </button>
+        </div>
+      </section>
+
+      <!-- 3D Perspective Workspace Grid -->
+      <div class="scaler-grid">
+        <!-- LEFT COLUMN: Recipe Specification Form -->
+        <div class="card-3d form-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <div class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+              <div>
+                <h3>Recipe Specifications</h3>
+                <p class="panel-description">Enter dish name, base yield, target yield, and 3 ingredients.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Alert Banner (Visible when validation errors occur) -->
+          <div id="validationAlert" class="alert-banner" role="alert" aria-live="assertive">
+            <div class="alert-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <div class="alert-content">
+              <strong>Please review and correct the following:</strong>
+              <ul id="alertErrorsList"></ul>
+            </div>
+          </div>
+
+          <!-- Recipe Form -->
+          <form id="recipeForm" novalidate>
+            <!-- Dish Name Section -->
+            <div class="form-section">
+              <span class="section-label">1. Culinary Identification</span>
+              <div class="form-group">
+                <label for="dishName" class="form-label">
+                  <span>Dish Name <span style="color: var(--accent-rose)">*</span></span>
+                  <span class="label-hint">Recipe title</span>
+                </label>
+                <div class="input-wrapper">
+                  <span class="input-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                  </span>
+                  <input
+                    type="text"
+                    id="dishName"
+                    class="form-input has-icon"
+                    placeholder="e.g., Traditional Beef Wellington"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+                <div id="dishNameError" class="field-error-msg" role="alert"></div>
+              </div>
+            </div>
+
+            <!-- Servings Section -->
+            <div class="form-section">
+              <span class="section-label">2. Yield & Scaling Parameters</span>
+              <div class="servings-grid">
+                <!-- Original Servings -->
+                <div class="form-group">
+                  <label for="originalServings" class="form-label">
+                    <span>Original Servings <span style="color: var(--accent-rose)">*</span></span>
+                    <span class="label-hint">Base portions (&gt;0)</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <span class="input-icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </span>
+                    <input
+                      type="number"
+                      id="originalServings"
+                      class="form-input has-icon"
+                      placeholder="e.g., 4"
+                      step="any"
+                      min="0.01"
+                      required
+                    />
+                  </div>
+                  <div id="originalServingsError" class="field-error-msg" role="alert"></div>
+                </div>
+
+                <!-- Wanted Servings -->
+                <div class="form-group">
+                  <label for="wantedServings" class="form-label">
+                    <span>Wanted Servings <span style="color: var(--accent-rose)">*</span></span>
+                    <span class="label-hint">Target portions (&gt;0)</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <span class="input-icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    </span>
+                    <input
+                      type="number"
+                      id="wantedServings"
+                      class="form-input has-icon"
+                      placeholder="e.g., 10"
+                      step="any"
+                      min="0.01"
+                      required
+                    />
+                  </div>
+                  <div id="wantedServingsError" class="field-error-msg" role="alert"></div>
+                </div>
+
+                <!-- Live Ratio Factor Pill -->
+                <div class="ratio-preview-pill">
+                  <span id="ratioLiveIndicator">Active Scaling Factor: <strong>—</strong> (Enter positive servings)</span>
+                  <span style="color: var(--text-dim); font-size: 0.7rem;">Formula: Wanted ÷ Original</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ingredients Section (Strictly 3 ingredients) -->
+            <div class="form-section">
+              <span class="section-label">3. Core Ingredients (3 Key Items)</span>
+
+              <!-- Ingredient 1 Block -->
+              <div class="ingredient-block">
+                <div class="ingredient-header">
+                  <span class="ingredient-num-badge">
+                    <span class="dot"></span> Ingredient 1
+                  </span>
+                  <span class="label-hint">Primary Element</span>
+                </div>
+                <div class="ingredient-row-fields">
+                  <div class="ing-name-col">
+                    <label for="ing1Name" class="form-label" style="font-size:0.775rem;">Name *</label>
+                    <input
+                      type="text"
+                      id="ing1Name"
+                      class="form-input"
+                      placeholder="e.g., Arborio Rice"
+                      required
+                    />
+                    <div id="ing1NameError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing1Qty" class="form-label" style="font-size:0.775rem;">Original Quantity *</label>
+                    <input
+                      type="number"
+                      id="ing1Qty"
+                      class="form-input"
+                      placeholder="e.g., 300"
+                      step="any"
+                      min="0.001"
+                      required
+                    />
+                    <div id="ing1QtyError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing1Unit" class="form-label" style="font-size:0.775rem;">Unit</label>
+                    <select id="ing1Unit" class="unit-select">
+                      <option value="g">g (grams)</option>
+                      <option value="kg">kg</option>
+                      <option value="ml">ml</option>
+                      <option value="l">l (liters)</option>
+                      <option value="cups">cups</option>
+                      <option value="tbsp">tbsp</option>
+                      <option value="tsp">tsp</option>
+                      <option value="oz">oz</option>
+                      <option value="lbs">lbs</option>
+                      <option value="pcs">pcs</option>
+                      <option value="">(no unit)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ingredient 2 Block -->
+              <div class="ingredient-block">
+                <div class="ingredient-header">
+                  <span class="ingredient-num-badge">
+                    <span class="dot"></span> Ingredient 2
+                  </span>
+                  <span class="label-hint">Secondary Element</span>
+                </div>
+                <div class="ingredient-row-fields">
+                  <div class="ing-name-col">
+                    <label for="ing2Name" class="form-label" style="font-size:0.775rem;">Name *</label>
+                    <input
+                      type="text"
+                      id="ing2Name"
+                      class="form-input"
+                      placeholder="e.g., Vegetable Broth"
+                      required
+                    />
+                    <div id="ing2NameError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing2Qty" class="form-label" style="font-size:0.775rem;">Original Quantity *</label>
+                    <input
+                      type="number"
+                      id="ing2Qty"
+                      class="form-input"
+                      placeholder="e.g., 750"
+                      step="any"
+                      min="0.001"
+                      required
+                    />
+                    <div id="ing2QtyError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing2Unit" class="unit-select-col form-label" style="font-size:0.775rem;">Unit</label>
+                    <select id="ing2Unit" class="unit-select">
+                      <option value="ml">ml</option>
+                      <option value="l">l (liters)</option>
+                      <option value="g">g (grams)</option>
+                      <option value="kg">kg</option>
+                      <option value="cups">cups</option>
+                      <option value="tbsp">tbsp</option>
+                      <option value="tsp">tsp</option>
+                      <option value="oz">oz</option>
+                      <option value="lbs">lbs</option>
+                      <option value="pcs">pcs</option>
+                      <option value="">(no unit)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ingredient 3 Block -->
+              <div class="ingredient-block">
+                <div class="ingredient-header">
+                  <span class="ingredient-num-badge">
+                    <span class="dot"></span> Ingredient 3
+                  </span>
+                  <span class="label-hint">Seasoning / Finishing Element</span>
+                </div>
+                <div class="ingredient-row-fields">
+                  <div class="ing-name-col">
+                    <label for="ing3Name" class="form-label" style="font-size:0.775rem;">Name *</label>
+                    <input
+                      type="text"
+                      id="ing3Name"
+                      class="form-input"
+                      placeholder="e.g., Parmigiano Reggiano"
+                      required
+                    />
+                    <div id="ing3NameError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing3Qty" class="form-label" style="font-size:0.775rem;">Original Quantity *</label>
+                    <input
+                      type="number"
+                      id="ing3Qty"
+                      class="form-input"
+                      placeholder="e.g., 80"
+                      step="any"
+                      min="0.001"
+                      required
+                    />
+                    <div id="ing3QtyError" class="field-error-msg" role="alert"></div>
+                  </div>
+                  <div>
+                    <label for="ing3Unit" class="unit-select-col form-label" style="font-size:0.775rem;">Unit</label>
+                    <select id="ing3Unit" class="unit-select">
+                      <option value="g">g (grams)</option>
+                      <option value="kg">kg</option>
+                      <option value="ml">ml</option>
+                      <option value="l">l (liters)</option>
+                      <option value="cups">cups</option>
+                      <option value="tbsp">tbsp</option>
+                      <option value="tsp">tsp</option>
+                      <option value="oz">oz</option>
+                      <option value="lbs">lbs</option>
+                      <option value="pcs">pcs</option>
+                      <option value="">(no unit)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: 3D Push Button -->
+            <div class="form-actions">
+              <button type="submit" id="scaleBtn" class="btn-3d-scale">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                  <polyline points="17 6 23 6 23 12"></polyline>
+                </svg>
+                Scale Recipe
+              </button>
+
+              <div class="btn-secondary-row">
+                <button type="button" id="resetBtn" class="btn-secondary">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                  Reset Form &amp; Storage
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- RIGHT COLUMN: 3D Scaled Output Board -->
+        <div class="results-panel-wrapper">
+          <!-- Empty State (Shown before calculation or on error) -->
+          <div id="emptyStateCard" class="card-3d empty-state-card">
+            <div class="empty-3d-gizmo" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v18M3 9l9-6 9 6M3 9a9 9 0 0 0 18 0M6 14a6 6 0 0 0 12 0"></path>
+              </svg>
+            </div>
+            <h4>Ready to Compute Yields</h4>
+            <p>
+              Complete the recipe details on the left and click <strong>Scale Recipe</strong>. The system validates all inputs and computes exact mathematical ratios.
+            </p>
+            <div class="formula-tip">
+              <span>Scaling Formula:</span>
+              <code>New Qty = Base Qty × (Wanted ÷ Original)</code>
+            </div>
+          </div>
+
+          <!-- Active Scaled Results Display (3D Tactile Card) -->
+          <div id="resultCard3D" class="result-card-3d" aria-live="polite">
+            <div class="result-header-block">
+              <div>
+                <span class="result-title-kicker">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Scaled Batch Summary
+                </span>
+                <h3 id="resDishName" class="result-dish-name">Truffle Risotto</h3>
+              </div>
+              <div class="ratio-badge-3d">
+                <span class="ratio-label">Multiplier</span>
+                <span id="resRatioMultiplier" class="ratio-value">2.5×</span>
+              </div>
+            </div>
+
+            <!-- Servings Comparison Metric Strip -->
+            <div class="servings-comparison-strip">
+              <div class="servings-stat-col">
+                <div class="servings-stat-label">Original Yield</div>
+                <div id="resOrigServings" class="servings-stat-val">4</div>
+              </div>
+              <div class="arrow-divider" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+              <div class="servings-stat-col">
+                <div class="servings-stat-label">Target Yield</div>
+                <div id="resWantedServings" class="servings-stat-val target-highlight">10</div>
+              </div>
+            </div>
+
+            <!-- Formula Banner -->
+            <div class="formula-display-banner">
+              <span id="resFormulaNote">Ratio formula: 10 ÷ 4 = 2.5000</span>
+              <span style="color: var(--accent-emerald);">Precision Verified ✓</span>
+            </div>
+
+            <!-- 3 Scaled Ingredients Cards -->
+            <div class="results-ingredients-list">
+              <!-- Ingredient 1 Output -->
+              <div class="result-ingredient-card">
+                <div class="ing-info-left">
+                  <span id="resIng1Name" class="ing-name-display">Carnaroli Rice</span>
+                  <span id="resIng1Base" class="ing-base-comparison">Base: 320 g</span>
+                </div>
+                <div class="ing-scaled-qty-box">
+                  <span id="resIng1Val" class="ing-calculated-val">800</span>
+                  <span id="resIng1Unit" class="ing-unit-tag">g</span>
+                </div>
+              </div>
+
+              <!-- Ingredient 2 Output -->
+              <div class="result-ingredient-card">
+                <div class="ing-info-left">
+                  <span id="resIng2Name" class="ing-name-display">Vegetable Broth</span>
+                  <span id="resIng2Base" class="ing-base-comparison">Base: 1.2 l</span>
+                </div>
+                <div class="ing-scaled-qty-box">
+                  <span id="resIng2Val" class="ing-calculated-val">3</span>
+                  <span id="resIng2Unit" class="ing-unit-tag">l</span>
+                </div>
+              </div>
+
+              <!-- Ingredient 3 Output -->
+              <div class="result-ingredient-card">
+                <div class="ing-info-left">
+                  <span id="resIng3Name" class="ing-name-display">Parmigiano Reggiano</span>
+                  <span id="resIng3Base" class="ing-base-comparison">Base: 85 g</span>
+                </div>
+                <div class="ing-scaled-qty-box">
+                  <span id="resIng3Val" class="ing-calculated-val">212.5</span>
+                  <span id="resIng3Unit" class="ing-unit-tag">g</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Result Card Footer & Utilities -->
+            <div class="result-footer-tools">
+              <span id="resTimestamp" class="save-timestamp">Saved to LocalStorage</span>
+              <div class="result-actions-group">
+                <button type="button" id="copySummaryBtn" class="tool-btn" title="Copy to clipboard">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy Summary
+                </button>
+                <button type="button" id="printRecipeBtn" class="tool-btn" title="Print recipe sheet">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                  </svg>
+                  Print Sheet
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Floating Toast Notification -->
+    <div id="toastNotice" class="toast-notice" role="status" aria-live="polite">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--accent-amber);">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span id="toastText">Action completed</span>
+    </div>
+
+    <!-- Application Footer -->
+    <footer class="app-footer">
+      <div class="footer-inner">
+        <div>
+          <span>CulinaryScale PRO &middot; Enterprise Client-Side Architecture</span>
+        </div>
+        <div class="footer-links">
+          <span>Pure Vanilla ES6+ &amp; CSS3 (3D)</span>
+          <span>&middot;</span>
+          <span>Zero Server Dependencies</span>
+          <span>&middot;</span>
+          <span>Offline Persistent</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Vanilla JavaScript Module -->
+    <script type="module" src="./js/script.js"></script>
+  </body>
+</html>

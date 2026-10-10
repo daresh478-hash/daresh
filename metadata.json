@@ -1,0 +1,6 @@
+{
+  "name": "Culinary Scale Pro",
+  "description": "Enterprise-grade professional culinary recipe scaler with precision ratio calculations, 3D tactile interface, and real-time validation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
